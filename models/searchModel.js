@@ -10,14 +10,6 @@ const connection = mysql.createPool({
 
 async function extractEntities(searchTerm) {
   console.log(searchTerm);
-  
-  function removeLowercaseFirst(str) {
-    var words = str.split(/\s+/);
-    var filteredWords = words.filter(function(word) {
-      return !/[a-z]/.test(word[0]);
-    });
-    return filteredWords.join(' ');
-  }
 
   const words = removeLowercaseFirst(searchTerm).split(' ');
   let entities = [];
@@ -107,6 +99,14 @@ function cartesianProduct(...arrays) {
 async function queryDatabase(table, word) {
   const [rows] = await connection.query(`SELECT * FROM ${table} WHERE name LIKE ?`, [`%${word}%`]);
   return [rows];
+}
+
+function removeLowercaseFirst(str) {
+  var words = str.split(/\s+/);
+  var filteredWords = words.filter(function(word) {
+    return !/[a-z]/.test(word[0]);
+  });
+  return filteredWords.join(' ');
 }
 exports.extractEntities = extractEntities;
 
